@@ -4,13 +4,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/books")
 public class BookController {
 
+
     @GetMapping("")
-    @ResponseBody
     public List<Book> showBooks(MockBookService mockBookService) {
 
         List<Book> testowe = mockBookService.getList();
@@ -18,18 +19,20 @@ public class BookController {
         return mockBookService.getList();
     }
 
+    @PostMapping("")
 
-    @PostMapping("/add")
-    public List<Book> addNewBook(MockBookService mockBookService, @RequestBody Book book) {
+    public String addNewBook(MockBookService mockBookService, @RequestBody Book book) {
         List<Book> test = mockBookService.addBook(book);
         for(Book elem: test) {
             System.out.println(elem.getTitle());
         }
-        return mockBookService.getList();
+        mockBookService.addBook(book);
+        return "redirect:books";
     }
 
+
     @GetMapping("/{id}")
-    public Book showThisBook(Long id, MockBookService mockBookService){
+    public Optional<Book> showThisBook(@PathVariable Long id, MockBookService mockBookService){
         return mockBookService.showBook(id);
     }
 
@@ -39,7 +42,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBook (Long id, MockBookService mockBookService){
+    public void deleteBook (@PathVariable Long id, MockBookService mockBookService){
         mockBookService.deleteBook(id);
     }
 }
