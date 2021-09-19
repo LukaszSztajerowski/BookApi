@@ -1,13 +1,16 @@
-package pl.coderslab;
+package pl.coderslab.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import pl.coderslab.model.Book;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
-public class MockBookService {
+@Service
+public class MockBookService implements BookService {
     private List<Book> list;
     private static final Logger log = LoggerFactory.getLogger(MockBookService.class);
 
@@ -22,7 +25,7 @@ public class MockBookService {
                 "programming"));
     }
 
-    public List<Book> getList() {
+    public List<Book> getBooks() {
         return list;
     }
 
@@ -36,7 +39,7 @@ public class MockBookService {
         return bookToAdd;
     }
 
-    public Optional<Book> getBookById(long id){
+    public Optional<Book> getBookById(Long id){
 
         log.debug("wyswietlam wybraną książkę o id {}", id);
         Optional<Book> bookById = list.stream().
